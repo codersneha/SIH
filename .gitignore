@@ -38,4 +38,8 @@ prisma/migrations/
 .cache/
 .temp/
 
+# Docker
+.docker/
+docker-compose.override.yml
+
 

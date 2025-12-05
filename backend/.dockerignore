@@ -1,0 +1,16 @@
+node_modules
+dist
+.env
+.env.local
+*.log
+npm-debug.log*
+.DS_Store
+.git
+.gitignore
+README.md
+SEED_CREDENTIALS.json
+SEED_DATA_DOCUMENTATION.md
+SEED_SUMMARY.md
+ZKP_MODULE_SUMMARY.md
+kill-port.sh
+
