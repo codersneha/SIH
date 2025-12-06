@@ -150,5 +150,3 @@ The application will be deployed with:
 ## License
 
 ISC
-# sih
-# sih

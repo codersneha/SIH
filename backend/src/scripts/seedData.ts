@@ -321,6 +321,91 @@ async function createRetailers() {
   return { retailers, credentials };
 }
 
+// Generate Admin user
+async function createAdmin() {
+  const keyPair = generateKeyPair();
+  const did = generateDID('admin', keyPair.publicKey);
+  const mobile = '9999999999';
+  const encMobile = encrypt(mobile);
+  const mobileHash = hashMobile(mobile);
+  const password = 'admin123';
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  const user = await prisma.user.create({
+    data: {
+      role: 'ADMIN',
+      did,
+      publicKey: keyPair.publicKey,
+      encMobile,
+      mobileHash,
+      name: 'System Admin',
+      trustScore: 1.0,
+      status: 'ACTIVE',
+      passwordHash,
+    },
+  });
+
+  return {
+    admin: user,
+    credentials: {
+      role: 'ADMIN',
+      name: 'System Admin',
+      did,
+      mobile,
+      password,
+    },
+  };
+}
+
+// Generate Consumers
+async function createConsumers() {
+  const consumers = [];
+  const consumerData = [
+    { name: 'Anita Sharma', address: 'Sector 15, Noida, UP' },
+    { name: 'Vikram Reddy', address: 'Banjara Hills, Hyderabad' },
+    { name: 'Priya Patel', address: 'Andheri West, Mumbai' },
+  ];
+
+  const credentials: any[] = [];
+
+  for (const data of consumerData) {
+    const keyPair = generateKeyPair();
+    const did = generateDID('consumer', keyPair.publicKey);
+    const mobile = generateMobile();
+    const encMobile = encrypt(mobile);
+    const mobileHash = hashMobile(mobile);
+    const password = 'consumer123';
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const user = await prisma.user.create({
+      data: {
+        role: 'CONSUMER',
+        did,
+        publicKey: keyPair.publicKey,
+        encMobile,
+        mobileHash,
+        name: data.name,
+        trustScore: 0.75,
+        status: 'ACTIVE',
+        passwordHash,
+      },
+    });
+
+    credentials.push({
+      role: 'CONSUMER',
+      name: data.name,
+      did,
+      mobile,
+      password,
+      address: data.address,
+    });
+
+    consumers.push({ ...user, did, mobile });
+  }
+
+  return { consumers, credentials };
+}
+
 // Generate 25 batches with full lifecycle
 async function createBatches(farmers: any[], transporters: any[], retailers: any[]) {
   const batches = [];
@@ -733,6 +818,14 @@ export async function seedDatabase() {
     const { retailers, credentials: retailerCredentials } = await createRetailers();
     console.log(`✅ Created ${retailers.length} retailers`);
 
+    console.log('Creating admin...');
+    const { admin, credentials: adminCredentials } = await createAdmin();
+    console.log(`✅ Created admin user`);
+
+    console.log('Creating consumers...');
+    const { consumers, credentials: consumerCredentials } = await createConsumers();
+    console.log(`✅ Created ${consumers.length} consumers`);
+
     console.log('Creating 25 batches with full lifecycle...');
     const batches = await createBatches(farmers, transporters, retailers);
     console.log(`✅ Created ${batches.length} batches`);
@@ -754,9 +847,11 @@ export async function seedDatabase() {
 
     // Combine all credentials
     const allCredentials = {
+      admin: adminCredentials,
       farmers: farmerCredentials,
       transporters: transporterCredentials,
       retailers: retailerCredentials,
+      consumers: consumerCredentials,
     };
 
     // Write credentials to file for easy testing
@@ -765,24 +860,30 @@ export async function seedDatabase() {
     console.log(`\n📝 Credentials saved to: ${credentialsPath}`);
 
     console.log('\n📊 Seed Summary:');
+    console.log(`   Admin: 1`);
     console.log(`   Farmers: ${farmers.length}`);
     console.log(`   Transporters: ${transporters.length}`);
     console.log(`   Retailers: ${retailers.length}`);
+    console.log(`   Consumers: ${consumers.length}`);
     console.log(`   Batches: ${batches.length}`);
     console.log(`   Economic Ledger Entries: ${economicCount}`);
     console.log(`   Quality Ledger Entries: ${qualityCount}`);
     console.log(`   ZKP Proofs: ${zkpCount}`);
     console.log('\n✅ Database seeded successfully!');
     console.log('\n💡 Login Credentials:');
+    console.log('   - Admin: mobile: 9999999999, password: admin123');
     console.log('   - Farmers: Use mobile number or DID, password: farmer123');
     console.log('   - Transporters: Use mobile number or DID, password: trans123');
     console.log('   - Retailers: Use mobile number or DID, password: retail123');
+    console.log('   - Consumers: Use mobile number or DID, password: consumer123');
     console.log(`   - Full credentials saved in: ${credentialsPath}\n`);
 
     return {
+      admin,
       farmers,
       transporters,
       retailers,
+      consumers,
       batches,
       economicCount,
       qualityCount,
