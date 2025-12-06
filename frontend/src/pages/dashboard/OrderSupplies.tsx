@@ -24,69 +24,70 @@ interface Order {
 
 // Dummy orders data - filtered by role-based flow
 // Consumer → Retailer, Retailer → Transporter, Transporter → Farmer
-const generateDummyOrders = (userRole: string): Order[] => {
-  const baseOrders: Order[] = [
-    {
-      orderId: 'ORD-1234',
-      supplyItem: 'Apple',
-      quantity: 50,
-      unit: 'kg',
-      price: 120,
-      totalAmount: 6000,
-      from: 'John Consumer',
-      fromDid: 'did:unichain:consumer-123',
-      fromRole: 'CONSUMER',
-      toRole: 'RETAILER',
-      status: 'Pending',
-      deliveryPreference: 'Standard',
-      destination: 'Retail Store A',
-      createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      orderId: 'ORD-1235',
-      supplyItem: 'Packaging Crates',
-      quantity: 100,
-      unit: 'units',
-      price: 22,
-      totalAmount: 2200,
-      from: 'Retail Supply Co.',
-      fromDid: 'did:unichain:retailer-456',
-      fromRole: 'RETAILER',
-      toRole: 'TRANSPORTER',
-      status: 'Pending',
-      deliveryPreference: 'Priority',
-      destination: 'Distribution Center',
-      createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-    {
-      orderId: 'ORD-1236',
-      supplyItem: 'Fuel',
-      quantity: 200,
-      unit: 'liters',
-      price: 95,
-      totalAmount: 19000,
-      from: 'Transport Solutions',
-      fromDid: 'did:unichain:transporter-789',
-      fromRole: 'TRANSPORTER',
-      toRole: 'FARMER',
-      status: 'Pending',
-      deliveryPreference: 'Standard',
-      destination: 'Farm Warehouse',
-      notes: 'Urgent delivery required',
-      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-    },
-  ];
-
-  // Filter orders based on role
-  if (userRole === 'RETAILER') {
-    return baseOrders.filter(order => order.toRole === 'RETAILER' && order.fromRole === 'CONSUMER');
-  } else if (userRole === 'TRANSPORTER') {
-    return baseOrders.filter(order => order.toRole === 'TRANSPORTER' && order.fromRole === 'RETAILER');
-  } else if (userRole === 'FARMER') {
-    return baseOrders.filter(order => order.toRole === 'FARMER' && order.fromRole === 'TRANSPORTER');
-  }
-  return [];
-};
+// Note: This function is kept for potential future use but currently unused
+// const generateDummyOrders = (userRole: string): Order[] => {
+//   const baseOrders: Order[] = [
+//     {
+//       orderId: 'ORD-1234',
+//       supplyItem: 'Apple',
+//       quantity: 50,
+//       unit: 'kg',
+//       price: 120,
+//       totalAmount: 6000,
+//       from: 'John Consumer',
+//       fromDid: 'did:unichain:consumer-123',
+//       fromRole: 'CONSUMER',
+//       toRole: 'RETAILER',
+//       status: 'Pending',
+//       deliveryPreference: 'Standard',
+//       destination: 'Retail Store A',
+//       createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//       orderId: 'ORD-1235',
+//       supplyItem: 'Packaging Crates',
+//       quantity: 100,
+//       unit: 'units',
+//       price: 22,
+//       totalAmount: 2200,
+//       from: 'Retail Supply Co.',
+//       fromDid: 'did:unichain:retailer-456',
+//       fromRole: 'RETAILER',
+//       toRole: 'TRANSPORTER',
+//       status: 'Pending',
+//       deliveryPreference: 'Priority',
+//       destination: 'Distribution Center',
+//       createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+//     },
+//     {
+//       orderId: 'ORD-1236',
+//       supplyItem: 'Fuel',
+//       quantity: 200,
+//       unit: 'liters',
+//       price: 95,
+//       totalAmount: 19000,
+//       from: 'Transport Solutions',
+//       fromDid: 'did:unichain:transporter-789',
+//       fromRole: 'TRANSPORTER',
+//       toRole: 'FARMER',
+//       status: 'Pending',
+//       deliveryPreference: 'Standard',
+//       destination: 'Farm Warehouse',
+//       notes: 'Urgent delivery required',
+//       createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+//     },
+//   ];
+//
+//   // Filter orders based on role
+//   if (userRole === 'RETAILER') {
+//     return baseOrders.filter(order => order.toRole === 'RETAILER' && order.fromRole === 'CONSUMER');
+//   } else if (userRole === 'TRANSPORTER') {
+//     return baseOrders.filter(order => order.toRole === 'TRANSPORTER' && order.fromRole === 'RETAILER');
+//   } else if (userRole === 'FARMER') {
+//     return baseOrders.filter(order => order.toRole === 'FARMER' && order.fromRole === 'TRANSPORTER');
+//   }
+//   return [];
+// };
 
 export default function OrderSupplies() {
   const [searchParams, setSearchParams] = useSearchParams();

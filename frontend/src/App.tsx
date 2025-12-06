@@ -7,7 +7,6 @@ import RegisterRetailer from './pages/RegisterRetailer';
 import RegisterConsumer from './pages/RegisterConsumer';
 import Login from './pages/Login';
 import VerifyIdentity from './pages/VerifyIdentity';
-import Trace from './pages/Trace';
 import ConsumerPortal from './pages/ConsumerPortal';
 import ZKPVerification from './pages/ZKPVerification';
 import Analytics from './pages/Analytics';

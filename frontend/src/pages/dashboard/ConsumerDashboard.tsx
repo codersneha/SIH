@@ -28,7 +28,7 @@ function CountUp({ value, duration = 2000, decimals = 0 }: { value: number; dura
     requestAnimationFrame(animate);
   }, [value, duration]);
 
-  return <>{count.toFixed(decimals).toLocaleString('en-IN')}</>;
+  return <>{Number(count.toFixed(decimals)).toLocaleString('en-IN')}</>;
 }
 
 export default function ConsumerDashboard() {
@@ -39,7 +39,7 @@ export default function ConsumerDashboard() {
     traceabilityRate: 100,
     complianceScore: 99.3,
   });
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadUser();

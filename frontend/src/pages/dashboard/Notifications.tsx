@@ -4,7 +4,7 @@ import { authService } from '../../services/auth';
 import { useState, useEffect } from 'react';
 
 export default function Notifications() {
-  const { notifications, markAsRead, markAllAsRead, removeNotification, clearAllNotifications } = useNotifications();
+  const { notifications, markAsRead, markAllAsRead, removeNotification } = useNotifications();
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
@@ -112,13 +112,6 @@ export default function Notifications() {
     return date.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   };
 
-  const getOrderSuppliesPath = () => {
-    if (user?.role === 'TRANSPORTER') return '/dashboard/transporter/order-supplies';
-    if (user?.role === 'RETAILER') return '/dashboard/retailer/order-supplies';
-    if (user?.role === 'CONSUMER') return '/dashboard/consumer/order-supplies';
-    if (user?.role === 'FARMER') return '/dashboard/farmer/order-supplies';
-    return '/dashboard/order-supplies';
-  };
 
   return (
     <div className="space-y-8">

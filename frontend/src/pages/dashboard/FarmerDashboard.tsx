@@ -37,11 +37,11 @@ function CountUp({ value, duration = 2000, decimals = 0 }: { value: number; dura
     requestAnimationFrame(animate);
   }, [value, duration]);
 
-  return <>{count.toFixed(decimals).toLocaleString('en-IN')}</>;
+  return <>{Number(count.toFixed(decimals)).toLocaleString('en-IN')}</>;
 }
 
 export default function FarmerDashboard() {
-  const [user, setUser] = useState<any>(null);
+  const [_user, setUser] = useState<any>(null);
   const [batches, setBatches] = useState<Batch[]>([]);
   const [loading, setLoading] = useState(true);
   const [metrics, setMetrics] = useState({

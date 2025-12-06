@@ -62,15 +62,6 @@ export default function Supplies() {
     return colors[category] || 'from-gray-500 to-gray-600';
   };
 
-  const getCategoryBgColor = (category: string) => {
-    const colors: Record<string, string> = {
-      'Fruits': 'from-orange-50 to-red-50',
-      'Vegetables': 'from-green-50 to-emerald-50',
-      'Grains': 'from-amber-50 to-yellow-50',
-      'Pulses': 'from-purple-50 to-pink-50',
-    };
-    return colors[category] || 'from-gray-50 to-gray-100';
-  };
 
   const getChangeColor = (changePercent: number) => {
     if (changePercent > 0) return 'text-green-600 bg-green-50';

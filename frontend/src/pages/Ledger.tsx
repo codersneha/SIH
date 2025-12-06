@@ -16,6 +16,8 @@ type EconomicRow = {
   paymentMethod: string;
   timestamp: string;
   currency: string;
+  orderId?: string | null;
+  unit?: string | null;
 };
 
 type QualityRow = {
@@ -49,26 +51,12 @@ type ZkpRow = {
   timestamp: string;
 };
 
-type OrderLedgerRow = {
-  type: string;
-  orderId: string;
-  fromParty: string;
-  toParty: string;
-  fromRole: string;
-  toRole: string;
-  supplyItem: string;
-  quantity: number;
-  unit: string;
-  totalAmount: number;
-  timestamp: string;
-};
-
 export default function Ledger() {
   const [tab, setTab] = useState<'economic' | 'quality' | 'zkp'>('economic');
   const [economic, setEconomic] = useState<EconomicRow[]>([]);
   const [quality, setQuality] = useState<QualityRow[]>([]);
   const [zkp, setZkp] = useState<ZkpRow[]>([]);
-  const [error, setError] = useState<string | null>(null);
+  const [error, _setError] = useState<string | null>(null);
   const [economicLoading, setEconomicLoading] = useState(false);
   const [economicError, setEconomicError] = useState<string | null>(null);
   const [qualityLoading, setQualityLoading] = useState(false);
